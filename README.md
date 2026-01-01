@@ -2,11 +2,11 @@
 
 ## Overview
 
-The Transaction Ledger Service is a backend service that records financial transactions using an **append-only ledger** approach.
+The Transaction Ledger Service is a backend com.ledger.service that records financial transactions using an **append-only ledger** approach.
 
-The goal of this service is to handle transactions in a way that is **safe, auditable, and predictable**, even when things go wrong — such as network retries, partial failures, or concurrent requests. These are common challenges in transaction-oriented systems, especially in banking and payments.
+The goal of this com.ledger.service is to handle transactions in a way that is **safe, auditable, and predictable**, even when things go wrong — such as network retries, partial failures, or concurrent requests. These are common challenges in transaction-oriented systems, especially in banking and payments.
 
-The service exposes REST APIs to create transactions and fetch balances, while ensuring that duplicate or retried requests do not lead to inconsistent or incorrect state.
+The com.ledger.service exposes REST APIs to create transactions and fetch balances, while ensuring that duplicate or retried requests do not lead to inconsistent or incorrect state.
 
 ---
 
@@ -34,9 +34,9 @@ To keep the initial version simple and focused, the following features will be a
 At a high level, the system processes a transaction request in the following way:
 
 1. A client sends a transaction request via a REST API
-2. The service checks whether the request is a retry using an idempotency key
+2. The com.ledger.service checks whether the request is a retry using an idempotency key
 3. The transaction is recorded as an append-only ledger entry
-4. The service returns the transaction result along with the updated balance
+4. The com.ledger.service returns the transaction result along with the updated balance
 
 PostgreSQL is used to provide durable storage and transactional guarantees.  
 Kafka is planned to be introduced in later stages to publish transaction events asynchronously.
@@ -45,7 +45,7 @@ Kafka is planned to be introduced in later stages to publish transaction events 
 
 ## Tech Stack
 
-- **Language:** Java
+- **Language:** Java (17)
 - **Framework:** Vert.x
 - **Database:** PostgreSQL
 - **Messaging (planned):** Kafka
