@@ -22,12 +22,9 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start() {
         sqlClient = DatabaseClient.create(vertx);
-        
-        // Initialize repositories using factory (Dependency Inversion Principle)
-        // Factory creates appropriate implementations based on database type
+
         RepositoryFactory.RepositorySet repositories = RepositoryFactory.createRepositories(sqlClient);
 
-        // Initialize services with repository interfaces (not concrete implementations)
         TransactionService transactionService = new TransactionService(
                 repositories.getTransactionRepository(),
                 repositories.getAccountRepository(),

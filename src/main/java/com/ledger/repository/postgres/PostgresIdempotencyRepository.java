@@ -1,5 +1,6 @@
-package com.ledger.repository;
+package com.ledger.repository.postgres;
 
+import com.ledger.repository.IIdempotencyRepository;
 import io.vertx.core.Future;
 import io.vertx.sqlclient.SqlClient;
 import io.vertx.sqlclient.Tuple;
@@ -7,7 +8,8 @@ import io.vertx.sqlclient.Tuple;
 import java.util.Optional;
 import java.util.UUID;
 
-public class IdempotencyRepository {
+
+public class PostgresIdempotencyRepository implements IIdempotencyRepository {
 
     private static final String FIND_BY_KEY_QUERY = """
         SELECT transaction_id
@@ -22,10 +24,11 @@ public class IdempotencyRepository {
 
     private final SqlClient sqlClient;
 
-    public IdempotencyRepository(SqlClient sqlClient) {
+    public PostgresIdempotencyRepository(SqlClient sqlClient) {
         this.sqlClient = sqlClient;
     }
 
+    @Override
     public Future<Optional<UUID>> findTransactionIdByKey(String idempotencyKey) {
         return sqlClient
                 .preparedQuery(FIND_BY_KEY_QUERY)
@@ -39,6 +42,7 @@ public class IdempotencyRepository {
                 });
     }
 
+    @Override
     public Future<Void> save(String idempotencyKey, UUID transactionId) {
         return sqlClient
                 .preparedQuery(SAVE_QUERY)

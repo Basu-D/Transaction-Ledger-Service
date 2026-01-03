@@ -1,6 +1,7 @@
-package com.ledger.repository;
+package com.ledger.repository.postgres;
 
 import com.ledger.entity.Transaction;
+import com.ledger.repository.ITransactionRepository;
 import io.vertx.core.Future;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.SqlClient;
@@ -10,7 +11,8 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-public class TransactionRepository {
+
+public class PostgresTransactionRepository implements ITransactionRepository {
 
     private static final String INSERT_TRANSACTION_QUERY = """
         INSERT INTO transactions (id, account_id, amount, type)
@@ -38,10 +40,11 @@ public class TransactionRepository {
 
     private final SqlClient sqlClient;
 
-    public TransactionRepository(SqlClient sqlClient) {
+    public PostgresTransactionRepository(SqlClient sqlClient) {
         this.sqlClient = sqlClient;
     }
 
+    @Override
     public Future<Transaction> save(Transaction transaction) {
         return sqlClient
                 .preparedQuery(INSERT_TRANSACTION_QUERY)
@@ -54,6 +57,7 @@ public class TransactionRepository {
                 .map(rows -> transaction);
     }
 
+    @Override
     public Future<Optional<Transaction>> findById(UUID transactionId) {
         return sqlClient
                 .preparedQuery(FIND_BY_ID_QUERY)
@@ -67,6 +71,7 @@ public class TransactionRepository {
                 });
     }
 
+    @Override
     public Future<Double> calculateBalance(String accountId) {
         return sqlClient
                 .preparedQuery(CALCULATE_BALANCE_QUERY)
