@@ -82,8 +82,7 @@ public class DatabaseConfig {
             if (input != null) {
                 props.load(input);
             }
-        } catch (IOException e) {
-            // Use defaults if properties file cannot be loaded
+        } catch (IOException ignored) {
         }
         return props;
     }
