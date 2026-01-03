@@ -26,6 +26,9 @@ dependencies {
 
     implementation "io.vertx:vertx-sql-client:$vertxVersion"
     implementation "io.vertx:vertx-pg-client:$vertxVersion"
+    
+    //SCRAM client for PostgreSQL authentication
+    implementation "com.ongres.scram:client:2.1"
 
     implementation "org.slf4j:slf4j-api:2.0.9"
     runtimeOnly "ch.qos.logback:logback-classic:1.4.14"
